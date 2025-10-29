@@ -1,0 +1,258 @@
+.resume-editor {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.editor-header h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0c4a6e;
+  margin: 0;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit,
+.btn-save,
+.btn-refine {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-edit {
+  background: white;
+  color: #0c4a6e;
+  border: 2px solid #e2e8f0;
+}
+
+.btn-edit:hover {
+  border-color: #eab308;
+  transform: translateY(-1px);
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.btn-save:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-refine {
+  background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%);
+  color: #78350f;
+}
+
+.btn-refine:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3);
+}
+
+.btn-refine:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.editor-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.editor-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.editor-section h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0c4a6e;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-field input,
+.editor-section textarea {
+  padding: 10px 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: #f8fafc;
+}
+
+.form-field input:hover,
+.editor-section textarea:hover {
+  border-color: #cbd5e1;
+  background: #ffffff;
+}
+
+.form-field input:focus,
+.editor-section textarea:focus {
+  outline: none;
+  border-color: #eab308;
+  box-shadow: 0 0 0 4px rgba(234, 179, 8, 0.1);
+  background: #ffffff;
+}
+
+.form-field p {
+  margin: 0;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.editor-section textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.skills-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skill-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.skill-item input {
+  flex: 1;
+}
+
+.skill-item button {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 2px solid #ef4444;
+  background: white;
+  color: #ef4444;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.skill-item button:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-add {
+  padding: 8px 12px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 8px;
+  background: transparent;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-add:hover {
+  border-color: #eab308;
+  color: #0c4a6e;
+  background: #fffbeb;
+}
+
+.skills-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-tag {
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
+  color: white;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.raw-text {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #475569;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 0;
+}
+
+.raw-text::-webkit-scrollbar {
+  width: 6px;
+}
+
+.raw-text::-webkit-scrollbar-track {
+  background: #e2e8f0;
+  border-radius: 3px;
+}
+
+.raw-text::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.raw-text::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

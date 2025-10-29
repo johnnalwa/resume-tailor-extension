@@ -1,4 +1,7 @@
 import React, { useState, useRef } from 'react';
+import toast from 'react-hot-toast';
+import { XCircle } from 'lucide-react';
+import { parseResume, analyzeResumeWithAI } from '../utils/resumeParser';
 
 function ResumeUpload({ onUpload, currentResume }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -46,29 +49,53 @@ function ResumeUpload({ onUpload, currentResume }) {
       'application/pdf',
       'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'text/plain'
+      'text/plain',
+      'image/png',
+      'image/jpeg',
+      'image/jpg'
     ];
 
     if (!validTypes.includes(file.type)) {
       setUploadStatus('error');
-      alert('Please upload a PDF, DOC, DOCX, or TXT file');
+      toast.error(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <XCircle size={18} />
+          <span>Please upload a PDF, DOC, DOCX, TXT, or Image file</span>
+        </div>,
+        { style: { background: '#ffffff', color: '#dc2626', border: '3px solid #dc2626', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)' } }
+      );
       return;
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
       setUploadStatus('error');
-      alert('File size must be less than 5MB');
+      toast.error(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <XCircle size={18} />
+          <span>File size must be less than 10MB</span>
+        </div>,
+        { style: { background: '#ffffff', color: '#dc2626', border: '3px solid #dc2626', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)' } }
+      );
       return;
     }
 
     setUploadStatus('uploading');
 
     try {
-      const text = await readFileAsText(file);
+      // Step 1: Parse the file (extract text)
+      const parsed = await parseResume(file);
+      
+      // Step 2: Analyze with AI to extract structured data
+      const analyzed = await analyzeResumeWithAI(parsed.rawText);
+      
+      // Step 3: Combine parsed and analyzed data
       const resumeData = {
-        name: file.name,
-        content: text,
+        ...analyzed,
+        fileName: parsed.fileName,
+        fileType: parsed.fileType,
+        fileSize: parsed.fileSize,
+        parsedAt: parsed.parsedAt,
         uploadedAt: new Date().toISOString()
       };
 
@@ -79,9 +106,18 @@ function ResumeUpload({ onUpload, currentResume }) {
         setUploadStatus('');
       }, 3000);
     } catch (error) {
-      console.error('Error reading file:', error);
+      console.error('Error processing file:', error);
       setUploadStatus('error');
-      alert('Failed to read file. Please try again.');
+      toast.error(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <XCircle size={18} />
+          <span>Failed to process file: {error.message}</span>
+        </div>,
+        { 
+          duration: 5000,
+          style: { background: '#ffffff', color: '#dc2626', border: '3px solid #dc2626', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)' } 
+        }
+      );
     }
   };
 
@@ -160,7 +196,8 @@ function ResumeUpload({ onUpload, currentResume }) {
             </svg>
             <p className="prompt-title">Drop your resume here</p>
             <p className="prompt-subtitle">or click to browse</p>
-            <p className="prompt-formats">PDF, DOC, DOCX, TXT (max 5MB)</p>
+            <p className="prompt-formats">PDF, DOC, DOCX, TXT, Images (max 10MB)</p>
+            <p className="prompt-formats">AI will extract and analyze your resume</p>
           </div>
         )}
         
@@ -170,10 +207,13 @@ function ResumeUpload({ onUpload, currentResume }) {
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
             </svg>
-            <p className="current-file-name">{currentResume.name}</p>
+            <p className="current-file-name">{currentResume.fileName || currentResume.name || 'Resume'}</p>
             <p className="current-file-date">
-              Uploaded {new Date(currentResume.uploadedAt).toLocaleDateString()}
+              Uploaded {new Date(currentResume.uploadedAt || currentResume.parsedAt).toLocaleDateString()}
             </p>
+            {currentResume.fullName && (
+              <p className="current-file-info">📋 {currentResume.fullName}</p>
+            )}
             <p className="prompt-subtitle">Click to upload a new resume</p>
           </div>
         )}
@@ -276,6 +316,13 @@ function ResumeUpload({ onUpload, currentResume }) {
         .current-file-date {
           font-size: 12px;
           color: #9ca3af;
+        }
+
+        .current-file-info {
+          font-size: 13px;
+          color: #0c4a6e;
+          font-weight: 600;
+          margin-top: 4px;
         }
       `}</style>
     </div>

@@ -16,7 +16,7 @@ export async function generateCoverLetter({ jobDescription, resume, tone, apiKey
       type: 'GENERATE_COVER_LETTER',
       data: {
         jobDescription,
-        resume: typeof resume === 'object' ? resume.content : resume,
+        resume: typeof resume === 'object' ? (resume.rawText || resume.content) : resume,
         tone,
         apiKey
       }

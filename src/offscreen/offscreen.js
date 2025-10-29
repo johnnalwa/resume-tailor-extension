@@ -342,51 +342,66 @@ CRITICAL INSTRUCTIONS:
  * Build user prompt
  */
 function buildUserPrompt({ jobDescription, resume, tone, userProfile }) {
-  let prompt = `TASK: Write a highly specific, personalized ${tone} cover letter.
+  let prompt = `You are writing a HIGHLY PERSONALIZED cover letter. You MUST use SPECIFIC details from the resume.
 
-STEP 1: EXTRACT FROM RESUME
-Carefully read this resume and list:
-- Full name (complete, not initials)
-- Exact years of experience
-- Every technical skill mentioned (Java, Python, C#, etc.)
-- Specific projects with details
-- Company names and job titles
-- Education and certifications
-
-RESUME:
+=== RESUME (READ CAREFULLY) ===
 ${resume}
 
-STEP 2: EXTRACT FROM JOB DESCRIPTION
-Identify:
-- Company name: Nairobi Coffee Exchange
-- Position: System Developer
-- Required skills
-- Required experience
-- Key responsibilities
-
-JOB DESCRIPTION:
+=== JOB DESCRIPTION ===
 ${jobDescription}
 
-STEP 3: WRITE COVER LETTER
-Write a cover letter that demonstrates you READ and UNDERSTOOD the resume by:
+=== CRITICAL INSTRUCTIONS ===
 
-MANDATORY REQUIREMENTS:
-1. Use candidate's FULL NAME from resume (not just initials)
-2. State EXACT years of experience from resume
-3. List SPECIFIC technologies from resume (e.g., "Java Spring Boot, Python Flask, C# ASP.NET")
-4. Mention ACTUAL companies or projects from resume
-5. Reference CONCRETE achievements with numbers
-6. Match resume skills to EXACT job requirements
-7. NO vague phrases like "solid foundation" or "comprehensive overview"
-8. Every claim must be backed by resume evidence
+1. EXTRACT THESE EXACT DETAILS FROM RESUME:
+   - Candidate's FULL NAME (use it in the letter)
+   - EXACT job titles and company names
+   - SPECIFIC technologies/skills (list them by name: Python, Django, React, AWS, etc.)
+   - ACTUAL projects with descriptions
+   - REAL achievements with numbers/metrics
+   - Education degree and institution
+   - Years of experience at each company
 
-EXAMPLE FORMAT:
-"With 7 years of experience at [Company from Resume], I have developed expertise in [specific technologies from resume]. For example, I built [specific project from resume] that [specific achievement with numbers]."
+2. ANALYZE JOB REQUIREMENTS:
+   - Extract company name and position title
+   - Identify required skills
+   - Note key responsibilities
+   - Find experience requirements
 
-NOT THIS:
-"I have experience in software development and a solid foundation in programming."
+3. WRITE COVER LETTER WITH THESE RULES:
+   ✅ DO:
+   - Use candidate's FULL NAME from resume
+   - Mention SPECIFIC companies where they worked (e.g., "Book Smart Consultancy Limited", "KALRO")
+   - List EXACT technologies (e.g., "Python, Django, Next.js, MySQL, MongoDB")
+   - Reference ACTUAL projects (e.g., "web platform for accounting services")
+   - Include REAL achievements (e.g., "reduced manual workload by automating financial processes")
+   - Match SPECIFIC resume skills to job requirements
+   - Use CONCRETE examples from work experience
+   - Mention education degree and university name
+   
+   ❌ DON'T:
+   - Use generic phrases like "solid foundation" or "strong background"
+   - Say "various technologies" - NAME THEM
+   - Say "multiple projects" - DESCRIBE THEM
+   - Use vague terms - BE SPECIFIC
+   - Make up information not in resume
 
-Write the cover letter now in ${tone} tone (300-400 words):`;
+4. STRUCTURE:
+   Paragraph 1: Opening with position and company name, brief intro
+   Paragraph 2-3: Match SPECIFIC resume experience to job requirements
+   Paragraph 4: Education and additional qualifications
+   Paragraph 5: Closing
+
+5. TONE: ${tone}
+
+6. LENGTH: 350-450 words
+
+EXAMPLE OF GOOD WRITING:
+"As a Fullstack Software Developer at Book Smart Consultancy Limited since June 2024, I automated financial record-keeping processes using Python and Django, reducing manual workload by 40%. I developed web platforms using Next.js for accounting and immigration services, managing MySQL and MongoDB databases."
+
+EXAMPLE OF BAD WRITING:
+"I have experience in software development with various technologies and worked on multiple projects."
+
+NOW WRITE THE COVER LETTER:`;
   
   return prompt;
 }

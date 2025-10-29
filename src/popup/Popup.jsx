@@ -4,6 +4,7 @@ import browser from 'webextension-polyfill';
 import toast, { Toaster } from 'react-hot-toast';
 import { CheckCircle, XCircle, Loader2, FileText, Sparkles } from 'lucide-react';
 import ResumeUpload from '../components/ResumeUpload';
+import ResumeSummary from '../components/ResumeSummary';
 import CoverLetterDisplay from '../components/CoverLetterDisplay';
 import ToneSelector from '../components/ToneSelector';
 import ModelSelector from '../components/ModelSelector';
@@ -284,6 +285,13 @@ function Popup() {
           Setup
         </button>
         <button
+          className={`tab ${activeTab === 'resume' ? 'active' : ''}`}
+          onClick={() => setActiveTab('resume')}
+          disabled={!resume}
+        >
+          Resume
+        </button>
+        <button
           className={`tab ${activeTab === 'generate' ? 'active' : ''}`}
           onClick={() => setActiveTab('generate')}
         >
@@ -353,6 +361,12 @@ function Popup() {
                 </div>
               )}
             </section>
+          </div>
+        )}
+
+        {activeTab === 'resume' && (
+          <div className="tab-content">
+            <ResumeSummary resumeData={resume} />
           </div>
         )}
 
