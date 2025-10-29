@@ -1,0 +1,83 @@
+.model-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.model-selector-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0c4a6e;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.info-icon {
+  font-size: 14px;
+  cursor: help;
+  opacity: 0.7;
+}
+
+.model-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.model-option {
+  padding: 12px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+}
+
+.model-option:hover {
+  border-color: #eab308;
+  background: #fefefe;
+}
+
+.model-option.selected {
+  border-color: #eab308;
+  background: #fffbeb;
+}
+
+.model-option-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.model-option-header input[type="radio"] {
+  cursor: pointer;
+  accent-color: #eab308;
+}
+
+.model-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0c4a6e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recommended-badge {
+  padding: 2px 8px;
+  background: #eab308;
+  color: #78350f;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.model-description {
+  margin: 0;
+  padding-left: 28px;
+  font-size: 12px;
+  color: #6b7280;
+}

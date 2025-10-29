@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "Resume Tailor Extension",
+  "version": "1.0.0",
+  "description": "Auto-generate tailored cover letters from job descriptions using AI",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "contextMenus",
+    "clipboardWrite",
+    "scripting",
+    "offscreen"
+  ],
+  "host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.linkedin.com/*",
+        "https://*.indeed.com/*",
+        "https://*.glassdoor.com/*",
+        "https://*.monster.com/*",
+        "https://*.ziprecruiter.com/*",
+        "https://*/careers/*",
+        "https://*/jobs/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
