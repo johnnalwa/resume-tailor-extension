@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import browser from 'webextension-polyfill';
 import toast, { Toaster } from 'react-hot-toast';
+import { CheckCircle, XCircle, Loader2, FileText, Sparkles } from 'lucide-react';
 import ResumeUpload from '../components/ResumeUpload';
 import CoverLetterDisplay from '../components/CoverLetterDisplay';
 import ToneSelector from '../components/ToneSelector';
@@ -42,15 +43,21 @@ function Popup() {
           setActiveTab('generate'); // Switch to generate tab
           
           // Show success toast
-          toast.success('✅ Job description loaded! Ready to generate.', {
-            duration: 3000,
-            position: 'top-center',
-            style: {
-              background: '#0c4a6e',
-              color: '#fff',
-              border: '2px solid #eab308',
-            },
-          });
+          toast.success(
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <CheckCircle size={18} />
+              <span>Job description loaded! Ready to generate.</span>
+            </div>,
+            {
+              duration: 4000,
+              style: {
+                background: '#ffffff',
+                color: '#0c4a6e',
+                border: '3px solid #eab308',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+              }
+            }
+          );
           
           // Clear the pending data
           await browser.storage.local.remove(['pendingJobDescription', 'pendingJobDescriptionTimestamp']);
@@ -81,41 +88,63 @@ function Popup() {
   const handleModelChange = async (newModel) => {
     setGeminiModel(newModel);
     await saveSettings({ geminiModel: newModel });
-    toast.success(`Model changed to ${newModel}`, {
-      duration: 2000,
-      style: {
-        background: '#0c4a6e',
-        color: '#fff',
-        border: '2px solid #eab308',
+    toast.success(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <CheckCircle size={18} />
+        <span>Model changed to {newModel}</span>
+      </div>,
+      {
+        duration: 2000,
+        style: {
+          background: '#ffffff',
+          color: '#0c4a6e',
+          border: '3px solid #eab308',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+        }
       }
-    });
+    );
   };
 
   const handleGenerateCoverLetter = async () => {
     if (!resume) {
-      toast.error('Please upload your resume first', {
-        style: { background: '#dc2626', color: '#fff' }
-      });
+      toast.error(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <XCircle size={18} />
+          <span>Please upload your resume first</span>
+        </div>,
+        { style: { background: '#ffffff', color: '#dc2626', border: '3px solid #dc2626', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)' } }
+      );
       return;
     }
 
     if (!jobDescription.trim()) {
-      toast.error('Please enter a job description', {
-        style: { background: '#dc2626', color: '#fff' }
-      });
+      toast.error(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <XCircle size={18} />
+          <span>Please enter a job description</span>
+        </div>,
+        { style: { background: '#ffffff', color: '#dc2626', border: '3px solid #dc2626', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)' } }
+      );
       return;
     }
 
     setIsGenerating(true);
     setError('');
     
-    const loadingToast = toast.loading('🤖 Generating with Gemini Nano...', {
-      style: {
-        background: '#0c4a6e',
-        color: '#fff',
-        border: '2px solid #eab308',
+    const loadingToast = toast.loading(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <Loader2 size={18} className="animate-spin" />
+        <span>Generating with Gemini Nano...</span>
+      </div>,
+      {
+        style: {
+          background: '#ffffff',
+          color: '#0c4a6e',
+          border: '3px solid #eab308',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+        }
       }
-    });
+    );
 
     try {
       // Use Chrome Built-in AI (Gemini Nano) by default
@@ -131,32 +160,64 @@ function Popup() {
       if (result.success) {
         setCoverLetter(result.coverLetter);
         setActiveTab('result');
-        toast.success('✨ Cover letter generated successfully!', {
-          id: loadingToast,
-          style: {
-            background: '#0c4a6e',
-            color: '#fff',
-            border: '2px solid #eab308',
+        toast.success(
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <CheckCircle size={18} />
+            <span>Cover letter generated successfully!</span>
+          </div>,
+          {
+            id: loadingToast,
+            style: {
+              background: '#ffffff',
+              color: '#0c4a6e',
+              border: '3px solid #eab308',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+            }
           }
-        });
+        );
       } else {
-        toast.error(result.error || 'Failed to generate cover letter', {
-          id: loadingToast,
-          style: { background: '#dc2626', color: '#fff' }
-        });
+        toast.error(
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <XCircle size={18} />
+            <span>{result.error || 'Failed to generate cover letter'}</span>
+          </div>,
+          {
+            id: loadingToast,
+            style: { background: '#dc2626', color: '#fff' }
+          }
+        );
       }
     } catch (err) {
-      toast.error(err.message || 'An error occurred', {
-        id: loadingToast,
-        style: { background: '#dc2626', color: '#fff' }
-      });
+      toast.error(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <XCircle size={18} />
+          <span>{err.message || 'An error occurred'}</span>
+        </div>,
+        {
+          id: loadingToast,
+          style: { background: '#dc2626', color: '#fff' }
+        }
+      );
     } finally {
       setIsGenerating(false);
     }
   };
 
   const handleExtractFromPage = async () => {
-    const loadingToast = toast.loading('📄 Extracting job description...');
+    const loadingToast = toast.loading(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <Loader2 size={18} className="animate-spin" />
+        <span>Extracting job description...</span>
+      </div>,
+      {
+        style: {
+          background: '#ffffff',
+          color: '#0c4a6e',
+          border: '3px solid #eab308',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+        }
+      }
+    );
     
     try {
       const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
@@ -166,25 +227,44 @@ function Popup() {
       
       if (response && response.jobDescription) {
         setJobDescription(response.jobDescription);
-        toast.success('✅ Job description extracted!', {
-          id: loadingToast,
-          style: {
-            background: '#0c4a6e',
-            color: '#fff',
-            border: '2px solid #eab308',
+        toast.success(
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FileText size={18} />
+            <span>Job description extracted!</span>
+          </div>,
+          {
+            id: loadingToast,
+            style: {
+              background: '#ffffff',
+              color: '#0c4a6e',
+              border: '3px solid #eab308',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+            }
           }
-        });
+        );
       } else {
-        toast.error('Could not extract job description from page', {
-          id: loadingToast,
-          style: { background: '#dc2626', color: '#fff' }
-        });
+        toast.error(
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <XCircle size={18} />
+            <span>{response.error || 'Could not extract job description'}</span>
+          </div>,
+          {
+            id: loadingToast,
+            style: { background: '#dc2626', color: '#fff' }
+          }
+        );
       }
     } catch (err) {
-      toast.error('Failed to extract. Make sure you are on a job posting page.', {
-        id: loadingToast,
-        style: { background: '#dc2626', color: '#fff' }
-      });
+      toast.error(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <XCircle size={18} />
+          <span>Failed to extract. Make sure you are on a job posting page.</span>
+        </div>,
+        {
+          id: loadingToast,
+          style: { background: '#dc2626', color: '#fff' }
+        }
+      );
     }
   };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { Copy, FileDown, FileText, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { exportToPDF, exportToWord, exportToText, copyToClipboard } from '../utils/exportUtils';
 
 function CoverLetterDisplay({ coverLetter, candidateName, jobTitle }) {
@@ -11,48 +12,82 @@ function CoverLetterDisplay({ coverLetter, candidateName, jobTitle }) {
     if (result.success) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-      toast.success('📋 Copied to clipboard!', {
-        style: {
-          background: '#0c4a6e',
-          color: '#fff',
-          border: '2px solid #eab308',
+      toast.success(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <CheckCircle size={18} />
+          <span>Copied to clipboard!</span>
+        </div>,
+        {
+          style: {
+            background: '#ffffff',
+            color: '#0c4a6e',
+            border: '3px solid #eab308',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+          }
         }
-      });
+      );
     } else {
-      toast.error('Failed to copy to clipboard', {
-        style: { background: '#dc2626', color: '#fff' }
-      });
+      toast.error(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <XCircle size={18} />
+          <span>Failed to copy to clipboard</span>
+        </div>,
+        { style: { background: '#ffffff', color: '#dc2626', border: '3px solid #dc2626', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)' } }
+      );
     }
   };
 
   const handleExportPDF = async () => {
     setExporting(true);
-    const loadingToast = toast.loading('📄 Generating PDF...');
+    const loadingToast = toast.loading(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <Loader2 size={18} className="animate-spin" />
+        <span>Generating PDF...</span>
+      </div>
+    );
     
     try {
       const result = await exportToPDF(coverLetter, candidateName, jobTitle);
       if (result.success) {
-        toast.success(`✅ PDF downloaded: ${result.filename}`, {
-          id: loadingToast,
-          duration: 4000,
-          style: {
-            background: '#0c4a6e',
-            color: '#fff',
-            border: '2px solid #eab308',
+        toast.success(
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <CheckCircle size={18} />
+            <span>PDF downloaded: {result.filename}</span>
+          </div>,
+          {
+            id: loadingToast,
+            duration: 4000,
+            style: {
+              background: '#0c4a6e',
+              color: '#fff',
+              border: '2px solid #eab308',
+            }
           }
-        });
+        );
       } else {
-        toast.error(`Failed to export PDF: ${result.error}`, {
-          id: loadingToast,
-          style: { background: '#dc2626', color: '#fff' }
-        });
+        toast.error(
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <XCircle size={18} />
+            <span>Failed to export PDF: {result.error}</span>
+          </div>,
+          {
+            id: loadingToast,
+            style: { background: '#dc2626', color: '#fff' }
+          }
+        );
       }
     } catch (error) {
       console.error('Export failed:', error);
-      toast.error('Failed to export PDF', {
-        id: loadingToast,
-        style: { background: '#dc2626', color: '#fff' }
-      });
+      toast.error(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <XCircle size={18} />
+          <span>Failed to export PDF</span>
+        </div>,
+        {
+          id: loadingToast,
+          style: { background: '#dc2626', color: '#fff' }
+        }
+      );
     } finally {
       setExporting(false);
     }
@@ -60,32 +95,55 @@ function CoverLetterDisplay({ coverLetter, candidateName, jobTitle }) {
 
   const handleExportWord = async () => {
     setExporting(true);
-    const loadingToast = toast.loading('📝 Generating Word document...');
+    const loadingToast = toast.loading(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <Loader2 size={18} className="animate-spin" />
+        <span>Generating Word document...</span>
+      </div>
+    );
     
     try {
       const result = await exportToWord(coverLetter, candidateName, jobTitle);
       if (result.success) {
-        toast.success(`✅ Word document downloaded: ${result.filename}`, {
-          id: loadingToast,
-          duration: 4000,
-          style: {
-            background: '#0c4a6e',
-            color: '#fff',
-            border: '2px solid #eab308',
+        toast.success(
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <CheckCircle size={18} />
+            <span>Word document downloaded: {result.filename}</span>
+          </div>,
+          {
+            id: loadingToast,
+            duration: 4000,
+            style: {
+              background: '#0c4a6e',
+              color: '#fff',
+              border: '2px solid #eab308',
+            }
           }
-        });
+        );
       } else {
-        toast.error(`Failed to export Word: ${result.error}`, {
-          id: loadingToast,
-          style: { background: '#dc2626', color: '#fff' }
-        });
+        toast.error(
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <XCircle size={18} />
+            <span>Failed to export Word: {result.error}</span>
+          </div>,
+          {
+            id: loadingToast,
+            style: { background: '#dc2626', color: '#fff' }
+          }
+        );
       }
     } catch (error) {
       console.error('Export failed:', error);
-      toast.error('Failed to export Word document', {
-        id: loadingToast,
-        style: { background: '#dc2626', color: '#fff' }
-      });
+      toast.error(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <XCircle size={18} />
+          <span>Failed to export Word document</span>
+        </div>,
+        {
+          id: loadingToast,
+          style: { background: '#dc2626', color: '#fff' }
+        }
+      );
     } finally {
       setExporting(false);
     }
@@ -93,32 +151,55 @@ function CoverLetterDisplay({ coverLetter, candidateName, jobTitle }) {
 
   const handleExportText = async () => {
     setExporting(true);
-    const loadingToast = toast.loading('📄 Generating text file...');
+    const loadingToast = toast.loading(
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <Loader2 size={18} className="animate-spin" />
+        <span>Generating text file...</span>
+      </div>
+    );
     
     try {
       const result = exportToText(coverLetter, candidateName, jobTitle);
       if (result.success) {
-        toast.success(`✅ Text file downloaded: ${result.filename}`, {
-          id: loadingToast,
-          duration: 4000,
-          style: {
-            background: '#0c4a6e',
-            color: '#fff',
-            border: '2px solid #eab308',
+        toast.success(
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <CheckCircle size={18} />
+            <span>Text file downloaded: {result.filename}</span>
+          </div>,
+          {
+            id: loadingToast,
+            duration: 4000,
+            style: {
+              background: '#0c4a6e',
+              color: '#fff',
+              border: '2px solid #eab308',
+            }
           }
-        });
+        );
       } else {
-        toast.error(`Failed to export text: ${result.error}`, {
-          id: loadingToast,
-          style: { background: '#dc2626', color: '#fff' }
-        });
+        toast.error(
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <XCircle size={18} />
+            <span>Failed to export text: {result.error}</span>
+          </div>,
+          {
+            id: loadingToast,
+            style: { background: '#dc2626', color: '#fff' }
+          }
+        );
       }
     } catch (error) {
       console.error('Export failed:', error);
-      toast.error('Failed to export text file', {
-        id: loadingToast,
-        style: { background: '#dc2626', color: '#fff' }
-      });
+      toast.error(
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <XCircle size={18} />
+          <span>Failed to export text file</span>
+        </div>,
+        {
+          id: loadingToast,
+          style: { background: '#dc2626', color: '#fff' }
+        }
+      );
     } finally {
       setExporting(false);
     }
