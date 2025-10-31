@@ -75,115 +75,37 @@ const tones = [
 ];
 
 function ToneSelector({ selectedTone, onToneChange }) {
+  const selectedToneData = tones.find(t => t.id === selectedTone) || tones[0];
+  
   return (
     <div className="tone-selector">
-      <div className="tone-grid">
-        {tones.map((tone) => (
-          <button
-            key={tone.id}
-            className={`tone-option ${selectedTone === tone.id ? 'selected' : ''}`}
-            onClick={() => onToneChange(tone.id)}
-          >
-            <div className="tone-icon">{tone.icon}</div>
-            <div className="tone-info">
-              <div className="tone-name">{tone.name}</div>
-              <div className="tone-description">{tone.description}</div>
-            </div>
-            {selectedTone === tone.id && (
-              <div className="selected-indicator">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              </div>
-            )}
-          </button>
-        ))}
+      <div className="api-key-input">
+        <label htmlFor="tone-select">Writing Tone</label>
+        <select
+          id="tone-select"
+          value={selectedTone}
+          onChange={(e) => onToneChange(e.target.value)}
+          style={{
+            width: '100%',
+            padding: '10px 12px',
+            border: '1px solid var(--border-color)',
+            borderRadius: '8px',
+            fontSize: '14px',
+            background: 'var(--bg-primary)',
+            color: 'var(--text-primary)',
+            cursor: 'pointer'
+          }}
+        >
+          {tones.map((tone) => (
+            <option key={tone.id} value={tone.id}>
+              {tone.name} - {tone.description}
+            </option>
+          ))}
+        </select>
+        <small>
+          Selected: <strong>{selectedToneData.name}</strong> - {selectedToneData.description}
+        </small>
       </div>
-
-      <style jsx>{`
-        .tone-selector {
-          width: 100%;
-        }
-
-        .tone-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 8px;
-        }
-
-        .tone-option {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 12px;
-          background: white;
-          border: 2px solid #e5e7eb;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.2s;
-          text-align: left;
-          position: relative;
-        }
-
-        .tone-option:hover {
-          border-color: #667eea;
-          background: #f9fafb;
-          transform: translateX(2px);
-        }
-
-        .tone-option.selected {
-          border-color: #667eea;
-          background: #f3f4ff;
-          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .tone-icon {
-          flex-shrink: 0;
-          width: 40px;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: #f3f4f6;
-          border-radius: 8px;
-          color: #6b7280;
-          transition: all 0.2s;
-        }
-
-        .tone-option.selected .tone-icon {
-          background: #667eea;
-          color: white;
-        }
-
-        .tone-info {
-          flex: 1;
-          min-width: 0;
-        }
-
-        .tone-name {
-          font-size: 14px;
-          font-weight: 600;
-          color: #1f2937;
-          margin-bottom: 2px;
-        }
-
-        .tone-description {
-          font-size: 12px;
-          color: #6b7280;
-        }
-
-        .selected-indicator {
-          flex-shrink: 0;
-          width: 24px;
-          height: 24px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: #667eea;
-          border-radius: 50%;
-          color: white;
-        }
-      `}</style>
     </div>
   );
 }

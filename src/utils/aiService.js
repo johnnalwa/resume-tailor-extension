@@ -6,10 +6,11 @@ import browser from 'webextension-polyfill';
  * @param {string} params.jobDescription - The job description
  * @param {string} params.resume - The resume content
  * @param {string} params.tone - The desired tone
+ * @param {string} params.language - Target language code
  * @param {string} params.apiKey - OpenAI API key
  * @returns {Promise<Object>} Result object with success status and cover letter or error
  */
-export async function generateCoverLetter({ jobDescription, resume, tone, apiKey }) {
+export async function generateCoverLetter({ jobDescription, resume, tone, language = 'en', apiKey }) {
   try {
     // Send message to background script to handle the API call
     const response = await browser.runtime.sendMessage({
@@ -18,6 +19,7 @@ export async function generateCoverLetter({ jobDescription, resume, tone, apiKey
         jobDescription,
         resume: typeof resume === 'object' ? (resume.rawText || resume.content) : resume,
         tone,
+        language,
         apiKey
       }
     });

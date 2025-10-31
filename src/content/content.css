@@ -1,37 +1,271 @@
-/* Notification */
-.resume-tailor-notification {
+/* Content Script Styles */
+
+/* Notification Container */
+.resume-tailor-notification-container {
   position: fixed;
   top: 20px;
   right: 20px;
-  background: #0c4a6e;
-  color: white;
-  padding: 16px 24px;
-  border-radius: 8px;
-  border: 2px solid #eab308;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  z-index: 10000000;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  max-width: 400px;
-  opacity: 0;
-  transform: translateX(100px);
-  transition: all 0.3s ease;
+  z-index: 999999;
+  pointer-events: none;
 }
 
-.resume-tailor-notification.show {
-  opacity: 1;
-  transform: translateX(0);
+/* Notification */
+.resume-tailor-notification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-bottom: 12px;
+  min-width: 300px;
+  max-width: 400px;
+  pointer-events: all;
+  animation: slideInRight 0.3s ease;
+  border-left: 4px solid #4361ee;
 }
 
 .resume-tailor-notification.success {
-  background: #0c4a6e;
-  border-color: #eab308;
+  border-left-color: #06d6a0;
 }
 
 .resume-tailor-notification.error {
-  background: #dc2626;
-  border-color: #fca5a5;
+  border-left-color: #ef476f;
+}
+
+.resume-tailor-notification.warning {
+  border-left-color: #ffc107;
+}
+
+.resume-tailor-notification.fade-out {
+  animation: slideOutRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.notification-icon {
+  flex-shrink: 0;
+}
+
+.resume-tailor-notification.success .notification-icon {
+  color: #06d6a0;
+}
+
+.resume-tailor-notification.error .notification-icon {
+  color: #ef476f;
+}
+
+.resume-tailor-notification.warning .notification-icon {
+  color: #ffc107;
+}
+
+.resume-tailor-notification.info .notification-icon {
+  color: #4361ee;
+}
+
+.notification-message {
+  color: #212529;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.notification-close {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.notification-close:hover {
+  background: #f8f9fa;
+  color: #212529;
+}
+
+/* Floating Action Button */
+.resume-tailor-fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #4361ee;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4);
+  z-index: 999998;
+  transition: all 0.3s ease;
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.resume-tailor-fab.show {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: all;
+  animation: bounceIn 0.5s ease;
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.resume-tailor-fab:hover {
+  background: #3651d4;
+  box-shadow: 0 6px 16px rgba(67, 97, 238, 0.5);
+  transform: scale(1.1);
+}
+
+.resume-tailor-fab:active {
+  transform: scale(0.95);
+}
+
+.resume-tailor-fab svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Tooltip for FAB */
+.resume-tailor-fab::before {
+  content: attr(title);
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 12px;
+  padding: 8px 12px;
+  background: #212529;
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.resume-tailor-fab::after {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 6px;
+  border: 6px solid transparent;
+  border-left-color: #212529;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.resume-tailor-fab:hover::before,
+.resume-tailor-fab:hover::after {
+  opacity: 1;
+}
+
+/* Dark mode support for sites with dark themes */
+@media (prefers-color-scheme: dark) {
+  .resume-tailor-notification {
+    background: #1a1d29;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .notification-message {
+    color: #e9ecef;
+  }
+
+  .notification-close {
+    color: #adb5bd;
+  }
+
+  .notification-close:hover {
+    background: #2d313f;
+    color: #e9ecef;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .resume-tailor-notification-container {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+  }
+
+  .resume-tailor-notification {
+    min-width: auto;
+    max-width: none;
+  }
+
+  .resume-tailor-fab {
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .resume-tailor-fab svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .resume-tailor-fab::before,
+  .resume-tailor-fab::after {
+    display: none;
+  }
 }
 
 /* Floating Button */
@@ -189,60 +423,6 @@
   background: #059669;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-}
-
-/* Notifications */
-.resume-tailor-notification {
-  position: fixed;
-  top: 24px;
-  right: 24px;
-  padding: 16px 24px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000001;
-  font-size: 14px;
-  font-weight: 500;
-  opacity: 0;
-  transform: translateX(100px);
-  transition: all 0.3s ease;
-  max-width: 400px;
-}
-
-.resume-tailor-notification.show {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.resume-tailor-notification.success {
-  background: #10b981;
-  color: white;
-}
-
-.resume-tailor-notification.error {
-  background: #ef4444;
-  color: white;
-}
-
-.resume-tailor-notification.warning {
-  background: #f59e0b;
-  color: white;
-}
-
-.resume-tailor-notification.info {
-  background: #3b82f6;
-  color: white;
-}
-
-/* Overlay */
-#resume-tailor-panel::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: -1;
 }
 
 /* Scrollbar styling */

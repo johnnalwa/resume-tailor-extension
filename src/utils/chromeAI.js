@@ -82,6 +82,7 @@ export async function summarizeJobDescription(jobDescription, options = {}) {
  * @param {string} params.jobDescription - Job description or summary
  * @param {string} params.resume - User's resume content
  * @param {string} params.tone - Desired tone (formal/friendly)
+ * @param {string} params.language - Target language code (default: 'en')
  * @param {Object} params.userProfile - User profile data
  * @returns {Promise<string>} Generated cover letter
  */
@@ -89,6 +90,7 @@ export async function generateCoverLetterWithPromptAPI({
   jobDescription, 
   resume, 
   tone = 'professional',
+  language = 'en',
   userProfile = {}
 }) {
   try {
@@ -97,7 +99,7 @@ export async function generateCoverLetterWithPromptAPI({
     }
 
     const session = await window.ai.languageModel.create({
-      systemPrompt: buildSystemPrompt(tone),
+      systemPrompt: buildSystemPrompt(tone, language),
       temperature: 0.7,
       topK: 40
     });
@@ -127,19 +129,31 @@ export async function generateCoverLetterWithPromptAPI({
  * @param {Function} onChunk - Callback for each text chunk
  * @returns {Promise<string>} Complete generated text
  */
-export async function streamCoverLetterGeneration(params, onChunk) {
+export async function streamCoverLetterGeneration({ 
+  jobDescription, 
+  resume, 
+  tone = 'professional',
+  language = 'en',
+  userProfile = {},
+  onChunk = () => {}
+}) {
   try {
     if (!('ai' in window) || !('languageModel' in window.ai)) {
       throw new Error('Prompt API not available');
     }
 
     const session = await window.ai.languageModel.create({
-      systemPrompt: buildSystemPrompt(params.tone),
+      systemPrompt: buildSystemPrompt(tone, language),
       temperature: 0.7,
       topK: 40
     });
 
-    const userPrompt = buildUserPrompt(params);
+    const userPrompt = buildUserPrompt({
+      jobDescription,
+      resume,
+      userProfile,
+      tone
+    });
     let fullText = '';
 
     const stream = await session.promptStreaming(userPrompt);
@@ -188,11 +202,12 @@ export async function proofreadCoverLetter(text) {
 }
 
 /**
- * Build system prompt based on tone
+ * Build system prompt based on tone and language
  * @param {string} tone - Desired tone
+ * @param {string} language - Target language code (default: 'en')
  * @returns {string} System prompt
  */
-function buildSystemPrompt(tone) {
+function buildSystemPrompt(tone, language = 'en') {
   const toneInstructions = {
     professional: 'You are a professional cover letter writer. Write in a formal, business-appropriate tone. Use professional language and maintain a respectful, competent demeanor. Focus on achievements and qualifications.',
     
@@ -207,7 +222,22 @@ function buildSystemPrompt(tone) {
     concise: 'You are a concise cover letter writer. Write briefly and to the point. Keep sentences short and focus on key qualifications. Eliminate unnecessary words while maintaining impact.'
   };
 
-  const basePrompt = `${toneInstructions[tone] || toneInstructions.professional}
+  const languageInstructions = {
+    'en': '',
+    'es': '\n\nIMPORTANT: Write the entire cover letter in Spanish (Español).',
+    'fr': '\n\nIMPORTANT: Write the entire cover letter in French (Français).',
+    'de': '\n\nIMPORTANT: Write the entire cover letter in German (Deutsch).',
+    'pt': '\n\nIMPORTANT: Write the entire cover letter in Portuguese (Português).',
+    'it': '\n\nIMPORTANT: Write the entire cover letter in Italian (Italiano).',
+    'zh': '\n\nIMPORTANT: Write the entire cover letter in Chinese (中文).',
+    'ja': '\n\nIMPORTANT: Write the entire cover letter in Japanese (日本語).',
+    'ko': '\n\nIMPORTANT: Write the entire cover letter in Korean (한국어).',
+    'ar': '\n\nIMPORTANT: Write the entire cover letter in Arabic (العربية).',
+    'hi': '\n\nIMPORTANT: Write the entire cover letter in Hindi (हिन्दी).',
+    'ru': '\n\nIMPORTANT: Write the entire cover letter in Russian (Русский).'
+  };
+
+  const basePrompt = `${toneInstructions[tone] || toneInstructions.professional}${languageInstructions[language] || ''}
 
 Your task is to generate a tailored cover letter that:
 1. Highlights relevant skills and experiences from the resume that match the job requirements
