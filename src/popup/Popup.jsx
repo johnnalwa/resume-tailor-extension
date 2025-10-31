@@ -467,13 +467,14 @@ function Popup() {
                 }}></div>
                 <div style={{ position: 'relative', zIndex: 1 }}>
                   <h3 style={{ 
-                    fontSize: '16px', 
-                    marginBottom: '8px', 
+                    fontSize: '15px', 
+                    marginBottom: '10px', 
                     fontWeight: 700, 
                     display: 'flex', 
                     alignItems: 'center', 
                     gap: '8px',
-                    color: 'white'
+                    color: 'white',
+                    lineHeight: '1.3'
                   }}>
                     <motion.div
                       animate={{ 
@@ -488,30 +489,35 @@ function Popup() {
                     >
                       <Sparkles size={18} />
                     </motion.div>
-                    AI Cover Letters in 30 Seconds
+                    Create Professional Cover Letters Instantly
                   </h3>
+                  <p style={{ 
+                    fontSize: '12px', 
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    marginBottom: '10px',
+                    lineHeight: '1.5'
+                  }}>
+                    Upload your resume, paste a job posting, and get a tailored cover letter in seconds
+                  </p>
                   <div style={{ 
                     display: 'flex', 
                     gap: '12px', 
-                    fontSize: '12px',
+                    fontSize: '11px',
                     color: 'rgba(255, 255, 255, 0.95)',
                     flexWrap: 'wrap',
                     alignItems: 'center'
                   }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Lock size={14} />
-                      Private
+                      <Lock size={13} />
+                      Your data stays private
                     </span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Zap size={14} />
-                      Offline
+                      <Zap size={13} />
+                      Works offline
                     </span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Globe size={14} />
-                      12 Languages
-                    </span>
-                    <span style={{ opacity: 0.8, fontSize: '11px', marginLeft: 'auto' }}>
-                      Chrome Built-in AI
+                      <Globe size={13} />
+                      Supports 12 languages
                     </span>
                   </div>
                 </div>
